@@ -26,46 +26,6 @@ void returnBook();
 void saveToFile();
 void loadFromFile();
 
-int main() {
-    int choice;
-
-    // Load data from file when program starts
-    loadFromFile();
-
-    // Menu-driven program
-    do {
-        printf("\n--- Library Management System ---\n");
-        printf("1. Add Book\n");
-        printf("2. Display All Books\n");
-        printf("3. Search Book by ID\n");
-        printf("4. Issue Book\n");
-        printf("5. Return Book\n");
-        printf("6. Save and Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-
-        // Calling functions based on user choice
-        if (choice == 1)
-            addBook();
-        else if (choice == 2)
-            displayBooks();
-        else if (choice == 3)
-            searchBook();
-        else if (choice == 4)
-            issueBook();
-        else if (choice == 5)
-            returnBook();
-        else if (choice == 6) {
-            saveToFile();   // save data before exiting
-            printf("Data saved. Program closed.\n");
-        }
-        else
-            printf("Invalid choice.\n");
-
-    } while (choice != 6);
-
-    return 0;   // end of program
-}
 void addBook() {
 
     // Check if library is full
@@ -171,39 +131,89 @@ void returnBook() {
 }
 void saveToFile() {
     FILE *fp;
+    int i;
 
-    // Open file in write-binary mode
-    fp = fopen("library.dat", "wb");
-
-    // Check file opening
+    fp = fopen("library.txt", "w");
     if (fp == NULL) {
         printf("File error.\n");
         return;
     }
 
-    // Save number of books
-    fwrite(&count, sizeof(int), 1, fp);
+    fprintf(fp, "%d\n", count);
 
-    // Save all book records
-    fwrite(library, sizeof(struct Book), count, fp);
+    for (i = 0; i < count; i++) {
+        fprintf(fp, "%d\n", library[i].bookID);
+        fprintf(fp, "%s\n", library[i].title);
+        fprintf(fp, "%s\n", library[i].author);
+        fprintf(fp, "%d\n", library[i].copies);
+    }
 
-    fclose(fp);   // close file
+    fclose(fp);
 }
 void loadFromFile() {
     FILE *fp;
+    int i;
 
-    // Open file in read-binary mode
-    fp = fopen("library.dat", "rb");
-
-    // If file does not exist
+    fp = fopen("library.txt", "r");
     if (fp == NULL)
         return;
 
-    // Read number of books
-    fread(&count, sizeof(int), 1, fp);
+    // Read the number of books
+    fscanf(fp, "%d\n", &count);
 
-    // Read all book records
-    fread(library, sizeof(struct Book), count, fp);
+    for (i = 0; i < count; i++) {
+        // Read book ID
+        fscanf(fp, "%d\n", &library[i].bookID);
 
-    fclose(fp);   // close file
+        // Read title until newline
+        fscanf(fp, " %[^\n]", library[i].title);
+
+        // Read author until newline
+        fscanf(fp, " %[^\n]", library[i].author);
+
+        // Read number of copies
+        fscanf(fp, "%d\n", &library[i].copies);
+    }
+
+    fclose(fp);
+}
+int main() {
+    int choice;
+
+    // Load data from file when program starts
+    loadFromFile();
+
+    // Menu-driven program
+    do {
+        printf("\n--- Library Management System ---\n");
+        printf("1. Add Book\n");
+        printf("2. Display All Books\n");
+        printf("3. Search Book by ID\n");
+        printf("4. Issue Book\n");
+        printf("5. Return Book\n");
+        printf("6. Save and Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        // Calling functions based on user choice
+        if (choice == 1)
+            addBook();
+        else if (choice == 2)
+            displayBooks();
+        else if (choice == 3)
+            searchBook();
+        else if (choice == 4)
+            issueBook();
+        else if (choice == 5)
+            returnBook();
+        else if (choice == 6) {
+            saveToFile();   // save data before exiting
+            printf("Data saved. Program closed.\n");
+        }
+        else
+            printf("Invalid choice.\n");
+
+    } while (choice != 6);
+
+    return 0;   // end of program
 }
