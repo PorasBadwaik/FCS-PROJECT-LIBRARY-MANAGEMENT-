@@ -43,7 +43,6 @@ int main() {
         printf("6. Save and Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-        getchar();  // to consume newline character after number input
 
         // Calling functions based on user choice
         if (choice == 1)
@@ -78,17 +77,16 @@ void addBook() {
     // Take book details from user
     printf("Enter Book ID: ");
     scanf("%d", &library[count].bookID);
-    getchar();  // to consume newline character
 
     printf("Enter Book Title: ");
-    fgets(library[count].title, 50,stdin);   // reads full line
+    scanf(" %[^\n]", library[count].title);   // reads full line
 
     printf("Enter Author Name: ");
-    fgets(library[count].author,50, stdin);   // reads full line
+    scanf(" %[^\n]", library[count].author);
 
     printf("Enter Number of Copies: ");
     scanf("%d", &library[count].copies);
-    getchar();  // to consume newline character
+
     // Increase book count
     count++;
 
@@ -116,7 +114,6 @@ void searchBook() {
 
     printf("Enter Book ID to search: ");
     scanf("%d", &id);
-    getchar();  // to consume newline character
 
     // Search for matching Book ID
     for (i = 0; i < count; i++) {
