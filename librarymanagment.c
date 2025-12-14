@@ -25,7 +25,8 @@ void issueBook();
 void returnBook();
 void saveToFile();
 void loadFromFile();
-
+// Function definitions
+// Function to add a new book
 void addBook() {
 
     // Check if library is full
@@ -39,7 +40,7 @@ void addBook() {
     scanf("%d", &library[count].bookID);
 
     printf("Enter Book Title: ");
-    scanf(" %[^\n]", library[count].title);   // reads full line
+    scanf(" %[^\n]", library[count].title);   //[^\n] reads full line
 
     printf("Enter Author Name: ");
     scanf(" %[^\n]", library[count].author);
@@ -52,6 +53,7 @@ void addBook() {
 
     printf("Book added successfully.\n");
 }
+// Function to display all books
 void displayBooks() {
     int i;
 
@@ -69,6 +71,7 @@ void displayBooks() {
         printf("\nCopies: %d\n", library[i].copies);
     }
 }
+// Function to search for a book by ID
 void searchBook() {
     int id, i;
 
@@ -89,6 +92,7 @@ void searchBook() {
     // If book not found
     printf("Book not found.\n");
 }
+// Function to issue a book
 void issueBook() {
     int id, i;
 
@@ -112,6 +116,7 @@ void issueBook() {
 
     printf("Book not found.\n");
 }
+// Function to return a book
 void returnBook() {
     int id, i;
 
@@ -129,18 +134,24 @@ void returnBook() {
 
     printf("Book not found.\n");
 }
+// Function to save data to file
 void saveToFile() {
     FILE *fp;
     int i;
 
+    // Open file in write mode
     fp = fopen("library.txt", "w");
+
+    // Check if file opened successfully
     if (fp == NULL) {
         printf("File error.\n");
         return;
     }
 
+    // Write the number of books
     fprintf(fp, "%d\n", count);
 
+    // Write each book's details
     for (i = 0; i < count; i++) {
         fprintf(fp, "%d\n", library[i].bookID);
         fprintf(fp, "%s\n", library[i].title);
@@ -148,12 +159,15 @@ void saveToFile() {
         fprintf(fp, "%d\n", library[i].copies);
     }
 
+    // Close the file
     fclose(fp);
 }
+// Function to load data from file
 void loadFromFile() {
     FILE *fp;
     int i;
 
+    // Open file in read mode
     fp = fopen("library.txt", "r");
     if (fp == NULL)
         return;
@@ -177,13 +191,14 @@ void loadFromFile() {
 
     fclose(fp);
 }
+// Main function
 int main() {
     int choice;
 
     // Load data from file when program starts
     loadFromFile();
 
-    // Menu-driven program
+    // Menu-driven interface
     do {
         printf("\n--- Library Management System ---\n");
         printf("1. Add Book\n");
